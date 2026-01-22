@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Contact</title>
+    <link rel="icon" href="/img/weather.png">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+<div class="main-content">
+    {{>header}}
+    <ul>
+        {{#each contactLinks}}
+            <li>
+                <strong>{{this.label}}</strong> <a>{{this.href}}</a>
+            </li>
+        {{/each}}
+    </ul>
+
+    {{#unless contactLinks}}
+        <p>No Contact found.</p>
+    {{/unless}}
+</div>
+
+{{>footer}}
+</body>
+
+</html>

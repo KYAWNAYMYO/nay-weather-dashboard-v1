@@ -1,0 +1,20 @@
+{
+  "name": "nay-weather-dashboard-v1",
+  "version": "1.0.0",
+  "description": "Weather Dashboard Nodejs Application",
+  "main": "app.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "weatherdashboard",
+    "Nodejs"
+  ],
+  "author": "NayMyoKyaw",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.13.2",
+    "express": "^5.1.0",
+    "hbs": "^4.2.0"
+  }
+}
