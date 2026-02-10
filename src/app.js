@@ -1,11 +1,13 @@
 const path = require('path');
 const express = require('express');
 const hbs = require('hbs');
+const geolocation = require('./utils/geolocation');
 const geocode = require('./utils/geocode');
 const forecast = require('./utils/forecast');
+const airquality = require('./utils/airquality');
 
 const app = express();
-const port = process.env.PORT || 3000
+const port = process.env.PORT
 
 // Define paths for Express config
 const publicDirectoryPath = path.join(__dirname, '../public');
@@ -20,13 +22,21 @@ hbs.registerPartials(partialsPath);
 // Setup static directory to serve
 app.use(express.static(publicDirectoryPath));
 
+const googleapisaccesskey = process.env.GOOGLE_APIS_ACCESS_KEY;
+const size = '500x400';
+const zoom = 10;
+
 const contactLinks = [
     {
         label: 'Email',
         icon: 'Mail',
         href: 'mailto:naymyokyaw21@gmail.com',
     },
-
+    {
+        label: 'Website',
+        icon: 'Web',
+        href: 'https://naymyokyaw.azurewebsites.net/',
+    },
     {
         label: 'LinkedIn',
         icon: 'Linkedin',
@@ -40,10 +50,28 @@ const contactLinks = [
 ];
 
 app.get('', (req, res) => {
-    res.render('index', {
-        title: 'Weather Dashboard',
-        name: 'Nay Myo Kyaw'
-    });
+    geolocation((error, {latitude, longitude,} = {}) => {
+        if(error) {
+            return res.send({error: error});
+        }
+        
+        forecast(latitude, longitude, (error, forcastData) => {
+            if(error) {
+                return res.send({ error })
+            }
+
+            const staticURL = `https://maps.googleapis.com/maps/api/staticmap?center=${latitude},${longitude}&zoom=10&size=500x400&key=${googleapisaccesskey}`;
+
+            res.render('index', {
+                title: 'Weather Dashboard',
+                name: 'Nay Myo Kyaw',
+                staticMapUrl: staticURL,
+                localWeather: forcastData
+            });
+        })
+    })
+
+
 })
 
 app.get('/about', (req, res) => {
@@ -90,6 +118,38 @@ app.get('/weather', (req, res) => {
             }
             res.send({
                 forcastData,
+                location,
+                address: req.query.address
+            })
+        })
+    })
+})
+
+app.get('/airquality', (req, res) => {
+    res.render('airquality', {
+        title: 'Air Quality',
+        name: 'Nay Myo Kyaw'
+    });
+})
+
+app.get('/getairquality', (req, res) => {
+    if(!req.query.address) {
+        return res.send({
+            error: 'You must provide an address!'
+        })
+    }
+
+    geocode(req.query.address, (error, {latitude, longitude, location} = {}) => {
+        if(error) {
+            return res.send({error: error});
+        }
+
+        airquality(latitude, longitude, (error, airqualityData) => {
+            if(error) {
+                return res.send({error: error});
+            }
+            res.send({
+                airqualityData,
                 location,
                 address: req.query.address
             })

@@ -3,25 +3,19 @@
 <html>
 
     <head>
-        <title>Weather Dashboard</title>
+        <title>Air Quality</title>
         <link rel="icon" href="/img/weather.png">
         <link rel="stylesheet" href="/css/styles.css">
     </head>
 
     <body>
-        <div id="title">
+        <div id="main-content">
             {{>header}}
 
-            <p>Use this site to get your weather!</p>
-        </div>
+            <p>Use this site to get air quality</p>
 
-        <div id="content">
-            {{>content}}
-        </div>
-
-        <div id="main-content">
             <form>
-                <input placeholder="Search Weather Conditions...">
+                <input placeholder="Search Air Conditions...">
                 <button type="submit">Search</button>
             </form>
 
@@ -31,7 +25,7 @@
 
             {{>footer}}
 
-            <script src="/client/client.js"></script>
+            <script src="/client/airqly.js"></script>
     </body>
 
 </html>
