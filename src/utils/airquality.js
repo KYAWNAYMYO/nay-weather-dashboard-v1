@@ -1,5 +1,4 @@
 const axios = require('axios');
-const {application} = require("express");
 
 //Using OpenWeatherMap API
 const openWeatherMapAppId = process.env.OPEN_WEATHER_MAP_APP_ID;

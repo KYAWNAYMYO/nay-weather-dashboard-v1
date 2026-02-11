@@ -3,7 +3,7 @@ const axios = require('axios')
 const googleapisaccesskey = process.env.GOOGLE_APIS_ACCESS_KEY;
 const API_URL = `https://www.googleapis.com/geolocation/v1/geolocate?key=${googleapisaccesskey}`;
 
-const requestBody = {
+/* const requestBody = {
     // Optional: consider the IP address as a fallback
     considerIp: true,
     // Optional: add cell tower data for more accuracy
@@ -29,13 +29,11 @@ const requestBody = {
         signalToNoiseRatio: 0
       }
     ]
-};
+}; */
 
 const geolocation = (callback) => {
-    axios.post(API_URL, {requestBody}).then(response => {
-        //console.log(response);
+    axios.post(API_URL).then(response => { //, {requestBody} request body is not needed for this API, it will use the IP address of the request to determine location.
         if(response.status === 200) {
-            //callback(response.data)
             callback(undefined, {
                 latitude: response.data.location.lat,
                 longitude: response.data.location.lng
