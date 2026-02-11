@@ -32,7 +32,7 @@ const API_URL = `https://www.googleapis.com/geolocation/v1/geolocate?key=${googl
 }; */
 
 const geolocation = (callback) => {
-    axios.post(API_URL).then(response => { //, {requestBody} request body is not needed for this API, it will use the IP address of the request to determine location.
+    axios.post(API_URL, { "considerIp": "true" }).then(response => { //, {requestBody} request body is not needed for this API, it will use the IP address of the request to determine location.
         if(response.status === 200) {
             callback(undefined, {
                 latitude: response.data.location.lat,
